@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPISample.DAL.Context;
@@ -77,6 +78,15 @@ namespace WebAPISample.Controllers
             }
             var categoryWithBlogs= context.Categories.Where(x => x.Id == id).Include(I => I.Blogs).ToList();
             return Ok(categoryWithBlogs);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            var newFileName = Guid.NewGuid()+ Path.GetExtension(file.FileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/documents/" + newFileName);
+            var stream = new FileStream(path,FileMode.Create);
+            await file.CopyToAsync(stream);
+            return Created("",file);
         }
     }
 }
