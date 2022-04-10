@@ -24,6 +24,12 @@ namespace WebAPISample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(cors=> {
+                cors.AddPolicy("yskPolicy", policy => {
+                    // policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); //Herkese, her headera ve her method a açýk
+                    policy.WithOrigins("https://mystils.com");
+                });
+            });
             services.AddControllers().AddNewtonsoftJson(opt=> {
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
@@ -40,7 +46,7 @@ namespace WebAPISample
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthorization();
-
+            app.UseCors("yskPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

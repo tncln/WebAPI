@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,7 @@ using WebAPISample.DAL.Entities;
 
 namespace WebAPISample.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
